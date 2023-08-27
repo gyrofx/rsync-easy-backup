@@ -1,0 +1,7 @@
+build/
+build-server/
+
+node_modules
+.env
+yarn-error.log
+dist

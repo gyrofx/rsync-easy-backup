@@ -1,0 +1,80 @@
+{
+  "search.useIgnoreFiles": false,
+  "search.exclude": {
+    "**/.next": true,
+    "**/build": true,
+    "**/node_modules": true,
+    "**/out": true,
+    "**/script.js": true,
+    "**/*-cache": true,
+    "**/dist": true,
+    "yarn.lock": true,
+    "**/*.mdx": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSaveTimeout": 6000,
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+
+  "css.lint.unknownAtRules": "ignore",
+  "css.lint.duplicateProperties": "warning",
+  "css.lint.importStatement": "warning",
+  "css.lint.zeroUnits": "warning",
+  "css.lint.ieHack": "warning",
+  "css.lint.important": "warning",
+  "css.lint.idSelector": "warning",
+
+  "scss.lint.duplicateProperties": "warning",
+  "scss.lint.importStatement": "warning",
+  "scss.lint.zeroUnits": "warning",
+  "scss.lint.idSelector": "warning",
+
+  "html.format.wrapLineLength": 140,
+  "html.format.preserveNewLines": true,
+  "html.format.maxPreserveNewLines": 2,
+  "html.format.indentHandlebars": true,
+  "html.format.endWithNewline": true,
+  "html.format.wrapAttributes": "auto",
+
+  "yaml.format.singleQuote": true,
+
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+
+  "eslint.packageManager": "yarn",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+
+  "[js]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[scss]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[md]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.trimTrailingWhitespace": false
+  },
+  "[json]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "[json5]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#1661b1e6"
+  },
+  "editor.tabSize": 2,
+  "jest.autoRun": "off",
+  "prisma.fileWatcher": false,
+  "cSpell.words": ["Odimeter", "openapi", "prisma", "reqres"],
+  "git.openRepositoryInParentFolders": "always"
+}
