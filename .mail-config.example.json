@@ -1,0 +1,18 @@
+{
+  "transport": {
+    "host": "mail.infomaniak.com",
+    "port": 465,
+    "secure": true,
+    "auth": {
+      "user": "bot@aq1.ch",
+      "pass": "4ao2KJXeAe82m@"
+    }
+  },
+  "send": {
+    "from": "Stoop IT <bot@aq1.ch>",
+    "to": [
+      "felix.eichenberger@gmail.com"
+    ],
+    "subjectPrefix": "[Stoop Backup]"
+  }
+}

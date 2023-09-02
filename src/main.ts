@@ -4,11 +4,14 @@ import { handleErrorDelicately } from './utils/handleErrorDelicately'
 import { rsyncAction } from './rsyncAction'
 import { nowUTC } from './utils/nowUTC'
 import { parseStrategyOption } from './parseStrategyOption'
+import { summaryMailAction } from './summaryMail/summaryMailAction'
 
 async function main() {
   const now = nowUTC()
 
-  await program
+  console.log('starting rsync-backup', { argv: process.argv, now })
+
+  program
     .command('backup')
     .argument('<name>', 'The name of the backup')
     .argument('<source>', 'The soruce of the backup')
@@ -32,11 +35,36 @@ async function main() {
       The file contains all the changed file and some statistics.`
     )
     .action(rsyncAction)
-    .parseAsync()
+
+  program
+    .command('send-summary')
+    .argument(
+      '<summarydir>',
+      `Set the summary dir path. If this flag is set, a JSON file will be created.
+      The file contains all the changed file and some statistics.`
+    )
+    .argument(
+      '<mailConfigPath>',
+      `Set the config path. If this flag is set, a JSON file will be created.
+      The file contains all the changed file and some statistics.`
+    )
+    .option(
+      '--disk-alias-path <diskAliasPath>',
+      `Set the summary dir path. If this flag is set, a JSON file will be created.
+      The file contains all the changed file and some statistics.`
+    )
+    .option(
+      '--days-ago <daysAgo>',
+      `Set the summary dir path. If this flag is set, a JSON file will be created.
+      The file contains all the changed file and some statistics.`
+    )
+    .action(summaryMailAction)
+
+  await program.parseAsync()
 }
 
 process.on('unhandledRejection', handleErrorDelicately)
 
 main()
-  .then(() => console.log('done'))
+  .then(() => console.log('backup-rsync done'))
   .catch(handleErrorDelicately)

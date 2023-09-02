@@ -1,10 +1,17 @@
+import { unknownErrorToPlainObject } from 'utils/errors'
 import { execAsync } from '../execAsync'
 import { df } from './shell'
 
-export async function diskInformationFromDirectory(directory: string) {
-  const { devicePath, totalSizeInBytes, usedInBytes, availableInBytes } = await df(directory)
-  if (!devicePath) throw new Error('Failed to get disk information')
+export interface DiskInformation {
+  devicePath: string
+  uuid: string
+  totalSizeInBytes: number
+  usedInBytes: number
+  availableInBytes: number
+}
 
+export async function diskInformationFromDirectory(directory: string): Promise<DiskInformation> {
+  const { devicePath, totalSizeInBytes, usedInBytes, availableInBytes } = await df(directory)
   const { uuid } = await getDeviceUuid(devicePath)
 
   return { devicePath, uuid, totalSizeInBytes, usedInBytes, availableInBytes }
