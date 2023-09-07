@@ -2,6 +2,7 @@ build/
 build-server/
 
 node_modules
-.env
-yarn-error.log
 dist
+.env
+.checkBackup.json
+yarn-error.log

@@ -1,0 +1,25 @@
+{
+  "host": "192.168.1.99",
+  "username": "user",
+  "phrase": "This the expected content in the files!",
+  "mountPath": "/mnt/backup",
+  "device": "/dev/sda1",
+  "filesToCheck": [
+    [
+      "backup1",
+      "dir1/.file.txt"
+    ],
+    [
+      "backup1",
+      "dir1/.file.txt"
+    ],
+    [
+      "backup2",
+      "dir1/.file.txt"
+    ],
+    [
+      "backup2",
+      "dir1/.file.txt"
+    ]
+  ]
+}

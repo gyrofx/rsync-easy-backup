@@ -5,11 +5,10 @@ import { rsyncAction } from './rsyncAction'
 import { nowUTC } from './utils/nowUTC'
 import { parseStrategyOption } from './parseStrategyOption'
 import { summaryMailAction } from './summaryMail/summaryMailAction'
+import { checkBackupAction } from './checkBackuo/checkBackupAction'
 
 async function main() {
   const now = nowUTC()
-
-  console.log('starting rsync-backup', { argv: process.argv, now })
 
   program
     .command('backup')
@@ -59,6 +58,8 @@ async function main() {
       The file contains all the changed file and some statistics.`
     )
     .action(summaryMailAction)
+
+  program.command('check-backup').action(checkBackupAction)
 
   await program.parseAsync()
 }
