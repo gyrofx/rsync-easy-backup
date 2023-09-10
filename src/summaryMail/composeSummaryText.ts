@@ -4,6 +4,7 @@ import { format, formatDuration, intervalToDuration, secondsToMilliseconds } fro
 import prettyBytes from 'pretty-bytes'
 import { diskAlias } from './diskAlias'
 import { nextDisk } from './nextDisk'
+import { RsyncSummary } from '../rsyncSummaryFromLogFile'
 
 export async function composeSummarytText(summaryDir: string, from: Date, to: Date) {
   const summaries = await summaryLogs(summaryDir, from, to)
@@ -32,9 +33,13 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
     text += `  available: ${prettyBytes(latestSummaryForDisk.disk.availableInBytes)}\n`
     text += `  used: ${prettyBytes(latestSummaryForDisk.disk.usedInBytes)}\n\n`
 
+    const summariesGroupedByName = groupBy(summaries, (summary) => summary.name)
+    text += `Summary of all Backups ***********************************\n`
+    text += backSummariesText(Object.values(summariesGroupedByName))
+
+    text += `\n`
     text += `Backups **************************************************\n`
 
-    const summariesGroupedByName = groupBy(summaries, (summary) => summary.name)
     Object.entries(summariesGroupedByName).forEach(([_, summaries]) => {
       const latestSummaryForName = summaries[0]
       if (!latestSummaryForName) return
@@ -62,14 +67,66 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
   return text
 }
 
-interface Options {
-  from: Date
-  to: Date
-  summaryDir: string
-  logDir?: string
+function backSummariesText(summariesGroupedByName: RsyncSummary[][]) {
+  return summariesGroupedByName.map(backupSummaryText).reduce((acc, line) => (acc += line), '')
+}
+
+function backupSummaryText(summaries: RsyncSummary[]) {
+  const firstSummary = summaries[0]
+  if (!firstSummary) return ''
+  const { name, totalFileSize: totalSize, numberOfFiles: totalNumberOfFiles } = firstSummary
+
+  const totalTransferredFileSize = summaries.reduce((acc, summary) => acc + summary.totalTransferredFileSize, 0)
+  const totalNumberFilesTransferred = summaries.reduce(
+    (acc, summary) => acc + summary.numberOfRegularFilesTransferred,
+    0
+  )
+  const nofBackups = summaries.length
+
+  return backSummaryTextTemplate({
+    totalTransferredFileSize,
+    totalSize,
+    totalNumberFilesTransferred,
+    totalNumberOfFiles,
+    nofBackups,
+    name,
+  })
+}
+
+function backSummaryTextTemplate(props: {
+  name: string
+  nofBackups: number
+  totalTransferredFileSize: number
+  totalNumberFilesTransferred: number
+  totalSize: number
+  totalNumberOfFiles: number
+}) {
+  const { totalTransferredFileSize, totalSize, totalNumberFilesTransferred, totalNumberOfFiles, nofBackups, name } =
+    props
+
+  const percentOfChangedFileSize = (totalTransferredFileSize / totalSize) * 100
+  const percentOfChangedNumberOfFiles = (totalNumberFilesTransferred / totalNumberOfFiles) * 100
+
+  const goodIcon = percentOfChangedFileSize < 20 && percentOfChangedNumberOfFiles < 20 ? '✅' : '⚠️'
+
+  const sizeText = `${prettyBytes(totalTransferredFileSize)} of ${prettyBytes(
+    totalSize
+  )} (${percentOfChangedFileSize.toFixed(0)} %)`
+  const nofText = `${totalNumberFilesTransferred} of ${totalNumberOfFiles} Files (${percentOfChangedNumberOfFiles.toFixed(
+    0
+  )} %)`
+  const nofBackupsText = `${nofBackups} backups`
+  return `${goodIcon} Backup ${name}: ${sizeText} ${nofText} in ${nofBackupsText}\n`
 }
 
 function formatSeconds(seconds: number) {
   const duration = intervalToDuration({ start: 0, end: secondsToMilliseconds(seconds) })
   return formatDuration(duration)
+}
+
+interface Options {
+  from: Date
+  to: Date
+  summaryDir: string
+  logDir?: string
 }
