@@ -37,7 +37,7 @@ export function rsync(props: RsyncProps) {
       ...rsyncFlags,
       ...hardLinkToPreviousBackupOption,
       logFileOption,
-      source + '/',
+      `${source}/`,
       backupDir,
     ]
     console.log('rsyncArgsuments', rsyncArgsuments)

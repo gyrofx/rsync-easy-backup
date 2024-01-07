@@ -8,7 +8,7 @@ export async function isProcessRunning(pid: number): Promise<boolean> {
     console.log(`Process with pid ${pid} is running`, result)
     return result.length > 0
   } catch (e) {
-    console.log(`Failed to check if process is running`, unknownErrorToPlainObject(e))
+    console.log("Failed to check if process is running", unknownErrorToPlainObject(e))
     return false
   }
 }

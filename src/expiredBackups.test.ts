@@ -16,7 +16,7 @@ describe('expiredBackups', () => {
         [{ date: new Date('2020-06-01T00:00:10.000Z'), name: '', path: ',' }],
         defaultStrategy(),
       ).map(({ date }) => date),
-    ).toMatchInlineSnapshot(`[]`)
+    ).toMatchInlineSnapshot("[]")
   })
 
   it('finds expired backups within the first strategy', () => {

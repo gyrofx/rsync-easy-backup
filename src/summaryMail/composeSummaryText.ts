@@ -34,24 +34,24 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
     text += `  used: ${prettyBytes(latestSummaryForDisk.disk.usedInBytes)}\n\n`
 
     const summariesGroupedByName = groupBy(summaries, (summary) => summary.name)
-    text += `Summary of all Backups ***********************************\n`
+    text += "Summary of all Backups ***********************************\n"
     text += backSummariesText(Object.values(summariesGroupedByName))
 
-    text += `\n`
-    text += `Backups **************************************************\n`
+    text += "\n"
+    text += "Backups **************************************************\n"
 
     Object.entries(summariesGroupedByName).forEach(([_, summaries]) => {
       const latestSummaryForName = summaries[0]
       if (!latestSummaryForName) return
 
-      text += `\n-----------------------------------------------\n`
+      text += "\n-----------------------------------------------\n"
       text += `  Backup ${latestSummaryForName.name} (${prettyBytes(
         latestSummaryForName.totalFileSize,
       )})\n`
       text += `    Latest backup ${format(latestSummaryForName.backupTime, 'dd.MM.yyyy HH:mm')}\n`
       text += `    Available backups: ${latestSummaryForName.availableBackups.join(', ')}\n`
-      text += `-----------------------------------------------\n`
-      text += `    Backups: \n`
+      text += "-----------------------------------------------\n"
+      text += "    Backups: \n"
 
       summaries.forEach((summary) => {
         text += `    Backup: ${format(summary.backupTime, 'dd.MM.yyyy HH:mm')}\n`

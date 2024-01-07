@@ -96,13 +96,13 @@ function removeDateTimeAndPidFromLine(line: string) {
 
 function parseNumberOfFiles(line: string) {
   const match = line.match(/reg: ([0-9,]+),/)
-  if (!match) throw new Error(`Invalid rsync summary`)
+  if (!match) throw new Error("Invalid rsync summary")
   return parseInt(match[1]!.replace(',', ''), 10)
 }
 
 function parseSummaryValue(line: string) {
   const parsed = line.split(':', 2)[1]?.trim().split(' ')[0]
-  if (!parsed) throw new Error(`Invalid rsync summary`)
+  if (!parsed) throw new Error("Invalid rsync summary")
   return parseTextAsBytes(parsed)
 }
 
@@ -122,7 +122,7 @@ function unitFactor(char: string) {
 
 function parseNumber(line: string) {
   const n = line.split(':', 2)[1]?.trim().replace(',', '')
-  if (!n) throw new Error(`Invalid rsync summary`)
+  if (!n) throw new Error("Invalid rsync summary")
   return parseInt(n, 10)
 }
 
