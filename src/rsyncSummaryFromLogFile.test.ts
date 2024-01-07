@@ -33,7 +33,7 @@ describe('rsyncSummaryFromLogFile', () => {
         logFileContent: logFileContent(),
         deletedBackups: ['old-backup'],
         availableBackups: ['new-backup'],
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "availableBackups": [
@@ -73,7 +73,7 @@ describe('rsyncSummaryFromLogFile', () => {
         logFileContent: logFileContent2(),
         deletedBackups: ['old-backup'],
         availableBackups: ['new-backup'],
-      })
+      }),
     ).toMatchInlineSnapshot(`
       {
         "availableBackups": [

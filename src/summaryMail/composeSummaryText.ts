@@ -45,7 +45,9 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
       if (!latestSummaryForName) return
 
       text += `\n-----------------------------------------------\n`
-      text += `  Backup ${latestSummaryForName.name} (${prettyBytes(latestSummaryForName.totalFileSize)})\n`
+      text += `  Backup ${latestSummaryForName.name} (${prettyBytes(
+        latestSummaryForName.totalFileSize,
+      )})\n`
       text += `    Latest backup ${format(latestSummaryForName.backupTime, 'dd.MM.yyyy HH:mm')}\n`
       text += `    Available backups: ${latestSummaryForName.availableBackups.join(', ')}\n`
       text += `-----------------------------------------------\n`
@@ -76,10 +78,13 @@ function backupSummaryText(summaries: RsyncSummary[]) {
   if (!firstSummary) return ''
   const { name, totalFileSize: totalSize, numberOfFiles: totalNumberOfFiles } = firstSummary
 
-  const totalTransferredFileSize = summaries.reduce((acc, summary) => acc + summary.totalTransferredFileSize, 0)
+  const totalTransferredFileSize = summaries.reduce(
+    (acc, summary) => acc + summary.totalTransferredFileSize,
+    0,
+  )
   const totalNumberFilesTransferred = summaries.reduce(
     (acc, summary) => acc + summary.numberOfRegularFilesTransferred,
-    0
+    0,
   )
   const nofBackups = summaries.length
 
@@ -101,8 +106,14 @@ function backSummaryTextTemplate(props: {
   totalSize: number
   totalNumberOfFiles: number
 }) {
-  const { totalTransferredFileSize, totalSize, totalNumberFilesTransferred, totalNumberOfFiles, nofBackups, name } =
-    props
+  const {
+    totalTransferredFileSize,
+    totalSize,
+    totalNumberFilesTransferred,
+    totalNumberOfFiles,
+    nofBackups,
+    name,
+  } = props
 
   const percentOfChangedFileSize = (totalTransferredFileSize / totalSize) * 100
   const percentOfChangedNumberOfFiles = (totalNumberFilesTransferred / totalNumberOfFiles) * 100
@@ -110,10 +121,10 @@ function backSummaryTextTemplate(props: {
   const goodIcon = percentOfChangedFileSize < 20 && percentOfChangedNumberOfFiles < 20 ? '✅' : '⚠️'
 
   const sizeText = `${prettyBytes(totalTransferredFileSize)} of ${prettyBytes(
-    totalSize
+    totalSize,
   )} (${percentOfChangedFileSize.toFixed(0)} %)`
   const nofText = `${totalNumberFilesTransferred} of ${totalNumberOfFiles} Files (${percentOfChangedNumberOfFiles.toFixed(
-    0
+    0,
   )} %)`
   const nofBackupsText = `${nofBackups} backups`
   return `${goodIcon} Backup ${name}: ${sizeText} ${nofText} in ${nofBackupsText}\n`

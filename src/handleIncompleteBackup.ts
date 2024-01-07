@@ -18,7 +18,7 @@ export async function isBackupStillRunning(incompleteData: IncompleteBackupData)
 export async function deleteIncompleteMarkerAndRenameDirectory(
   destination: string,
   backupDir: string,
-  incompleteData: IncompleteBackupData
+  incompleteData: IncompleteBackupData,
 ) {
   const { pid, backupDir: incompleteBackupDir } = incompleteData
 

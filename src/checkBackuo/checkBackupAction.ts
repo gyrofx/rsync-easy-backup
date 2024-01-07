@@ -48,7 +48,7 @@ async function checkFiles(filesToCheck: string[], expectedHash: string, basePath
 
       if (!(await fileExists(path))) console.log(`❌ File does not exist: ${path}`)
       else await checkFileSha256(path, expectedHash)
-    })
+    }),
   )
 }
 

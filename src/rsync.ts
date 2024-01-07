@@ -33,7 +33,13 @@ export function rsync(props: RsyncProps) {
     const hardLinkToPreviousBackupOption = previousBackup ? [`--link-dest=${previousBackup}`] : []
     const logFileOption = `--log-file=${logFile}`
 
-    const rsyncArgsuments = [...rsyncFlags, ...hardLinkToPreviousBackupOption, logFileOption, source + '/', backupDir]
+    const rsyncArgsuments = [
+      ...rsyncFlags,
+      ...hardLinkToPreviousBackupOption,
+      logFileOption,
+      source + '/',
+      backupDir,
+    ]
     console.log('rsyncArgsuments', rsyncArgsuments)
 
     const rsync = spawn('rsync', rsyncArgsuments, {

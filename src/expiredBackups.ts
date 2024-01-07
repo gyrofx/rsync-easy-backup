@@ -26,7 +26,7 @@ function lastKeptBackupByStrategy(lastKeptBackups: Record<string, Date>, straget
 
 function outsideIntervalByStratgey(lastKeptBackup: Date, date: Date, stragety: Strategy) {
   const diffInSecondsBetweenLastKeptBackupAndCurrentBackup = Math.abs(
-    millisecondsToSeconds(date.getTime() - lastKeptBackup.getTime())
+    millisecondsToSeconds(date.getTime() - lastKeptBackup.getTime()),
   )
 
   return diffInSecondsBetweenLastKeptBackupAndCurrentBackup > stragety.cutOfIntervalInSeconds

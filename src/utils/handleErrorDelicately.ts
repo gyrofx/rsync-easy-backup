@@ -8,7 +8,7 @@ export function handleErrorDelicately(error: unknown) {
           message: error.message,
           stack: error.stack,
           unhandledRejection: true,
-        })
+        }),
       )
     } catch {
       console.error(error)

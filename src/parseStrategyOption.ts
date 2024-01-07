@@ -19,6 +19,6 @@ export function parseStrategyOption(strategy: string, now: Date): Strategy[] {
         const cutOfIntervalInSeconds = hoursToSeconds(intervalInDays * 24)
         return { afterDays, intervalInDays, cutOfDate, cutOfIntervalInSeconds }
       }),
-    'afterDays'
+    'afterDays',
   ).reverse()
 }

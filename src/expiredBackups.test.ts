@@ -12,9 +12,10 @@ describe('expiredBackups', () => {
     vi.setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
     console.log('......', new Date())
     expect(
-      expiredBackups([{ date: new Date('2020-06-01T00:00:10.000Z'), name: '', path: ',' }], defaultStrategy()).map(
-        ({ date }) => date
-      )
+      expiredBackups(
+        [{ date: new Date('2020-06-01T00:00:10.000Z'), name: '', path: ',' }],
+        defaultStrategy(),
+      ).map(({ date }) => date),
     ).toMatchInlineSnapshot(`[]`)
   })
 
@@ -41,8 +42,8 @@ describe('expiredBackups', () => {
           { date: new Date('2020-04-10T00:00:00.000Z'), name: '', path: ',' },
           { date: new Date('2020-04-05T00:00:00.000Z'), name: '', path: ',' },
         ],
-        defaultStrategy()
-      ).map(({ date }) => date)
+        defaultStrategy(),
+      ).map(({ date }) => date),
     ).toMatchInlineSnapshot(`
       [
         2020-05-30T00:00:00.000Z,

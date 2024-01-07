@@ -37,6 +37,7 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.4.1",
     "@types/debug": "^4.1.7",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^18.14.0",
@@ -60,16 +61,6 @@
     "ts-node": "^10.9.1",
     "tsx": "^3.12.7",
     "typescript": "^4.9.5",
-    "vite": "^4.0.4",
-    "vite-plugin-svgr": "^2.4.0",
-    "vite-tsconfig-paths": "^4.0.3",
     "vitest": "^0.28.5"
-  },
-  "prettier": {
-    "$schema": "http://json.schemastore.org/prettierrc",
-    "printWidth": 120,
-    "proseWrap": "always",
-    "semi": false,
-    "singleQuote": true
   }
 }

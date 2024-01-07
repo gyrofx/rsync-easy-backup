@@ -14,7 +14,11 @@ describe('composeSummaryText', () => {
     const date = new Date(2023, 7, 30)
     vi.setSystemTime(date)
 
-    const text = await composeSummarytText('./src/summaryMail/__test__', new Date(2023, 7, 25), new Date(2023, 7, 30))
+    const text = await composeSummarytText(
+      './src/summaryMail/__test__',
+      new Date(2023, 7, 25),
+      new Date(2023, 7, 30),
+    )
     expect(text).toMatchInlineSnapshot(`
       "Next Disk ***** DISK 1 *****
 

@@ -1,10 +1,20 @@
 import { existsSync, mkdirSync } from 'fs'
 import { nowUTC } from './utils/nowUTC'
-import { availableBackups, backupDirectroy, backupMarkerExists, lastBackupDir, latestBackups } from './backup'
+import {
+  availableBackups,
+  backupDirectroy,
+  backupMarkerExists,
+  lastBackupDir,
+  latestBackups,
+} from './backup'
 import { rsync } from './rsync'
 import { deleteBackup } from './backup'
 import { expiredBackups } from './expiredBackups'
-import { deleteIncompleteMarkerAndRenameDirectory, incomplete, isBackupStillRunning } from './handleIncompleteBackup'
+import {
+  deleteIncompleteMarkerAndRenameDirectory,
+  incomplete,
+  isBackupStillRunning,
+} from './handleIncompleteBackup'
 import { removeSymlinkLatestBackup, symlinkLatestBackup } from './removeSymlinkLatestBackup'
 import { Strategy } from './types'
 import { rsyncSummaryFromLogFile } from './rsyncSummaryFromLogFile'
