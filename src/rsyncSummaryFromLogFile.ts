@@ -1,6 +1,6 @@
 import { UnknownKeysParam, z } from 'zod'
-import { DiskInformation, diskInformationFromDirectory } from './utils/disk'
-import { AssertTrue, Has } from 'conditional-type-checks'
+import { type DiskInformation, diskInformationFromDirectory } from './utils/disk'
+import type { AssertTrue, Has } from 'conditional-type-checks'
 
 export async function rsyncSummaryFromLogFile(props: {
   name: string
@@ -34,8 +34,8 @@ export async function rsyncSummaryFromLogFile(props: {
     totalFileSize: 0,
     totalTransferredFileSize: 0,
   } as RsyncSummary
-  lines.forEach((line) => {
-    line = removeDateTimeAndPidFromLine(line.trim())
+  for (const rawLine of lines) {
+    const line = removeDateTimeAndPidFromLine(rawLine.trim())
     if (line.startsWith('Number of files')) {
       summary.numberOfFiles = parseNumberOfFiles(line)
     } else if (line.startsWith('Number of regular files transferred')) {
@@ -45,7 +45,7 @@ export async function rsyncSummaryFromLogFile(props: {
     } else if (line.startsWith('Total transferred file size')) {
       summary.totalTransferredFileSize = parseSummaryValue(line)
     }
-  })
+  }
   const disk = await diskInformationFromDirectory(destination)
   return { ...summary, disk, deletedBackups, availableBackups, backupDurationInSeconds }
 }
@@ -102,14 +102,14 @@ function parseNumberOfFiles(line: string) {
 
 function parseSummaryValue(line: string) {
   const parsed = line.split(':', 2)[1]?.trim().split(' ')[0]
-  if (!parsed) throw new Error("Invalid rsync summary")
+  if (!parsed) throw new Error('Invalid rsync summary')
   return parseTextAsBytes(parsed)
 }
 
 export function parseTextAsBytes(text: string) {
   const factor = unitFactor(text.slice(-1))
   if (factor !== 1) text = text.slice(0, -1)
-  return parseFloat(text) * factor
+  return Number.parseFloat(text) * factor
 }
 
 function unitFactor(char: string) {

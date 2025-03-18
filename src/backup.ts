@@ -1,6 +1,6 @@
-import { execSync } from 'child_process'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { execSync } from 'node:child_process'
+import { join } from 'node:path'
+import { existsSync } from 'node:fs'
 import { format, parse } from 'date-fns'
 import { directories } from './utils/directories'
 import { minLength1 } from './utils/array'
@@ -16,7 +16,7 @@ export function backupMarkerExists(destination: string) {
   return existsSync(join(destination, 'backup.marker'))
 }
 
-export function backupDirectroy(destination: string, now: Date) {
+export function backupDirectory(destination: string, now: Date) {
   const path = format(now, 'yyyy-MM-dd-HHmmss')
   return join(destination, path)
 }

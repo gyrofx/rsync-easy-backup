@@ -1,8 +1,8 @@
-import { existsSync, mkdirSync } from 'fs'
+import { existsSync, mkdirSync } from 'node:fs'
 import { nowUTC } from './utils/nowUTC'
 import {
   availableBackups,
-  backupDirectroy,
+  backupDirectory,
   backupMarkerExists,
   lastBackupDir,
   latestBackups,
@@ -16,10 +16,10 @@ import {
   isBackupStillRunning,
 } from './handleIncompleteBackup'
 import { removeSymlinkLatestBackup, symlinkLatestBackup } from './removeSymlinkLatestBackup'
-import { Strategy } from './types'
+import type { Strategy } from './types'
 import { rsyncSummaryFromLogFile } from './rsyncSummaryFromLogFile'
-import { readFile, writeFile } from 'fs/promises'
-import { basename, join } from 'path'
+import { readFile, writeFile } from 'node:fs/promises'
+import { basename, join } from 'node:path'
 import { millisecondsToSeconds } from 'date-fns'
 import { unknownErrorToPlainObject } from './utils/errors'
 
@@ -33,7 +33,7 @@ export async function rsyncAction(name: string, source: string, destination: str
 
     const now = nowUTC()
     const startTime = now.getTime()
-    const backupDir = backupDirectroy(destination, now)
+    const backupDir = backupDirectory(destination, now)
     const logFilename = `${name}-${basename(backupDir)}`
     const logFile = logDir ? join(logDir, `${logFilename}.log`) : `/tmp/${logFilename}.log`
 

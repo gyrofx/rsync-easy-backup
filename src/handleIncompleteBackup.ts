@@ -1,6 +1,6 @@
-import { existsSync, renameSync, unlinkSync } from 'fs'
-import { join } from 'path'
-import { readFile } from 'fs/promises'
+import { existsSync, renameSync, unlinkSync } from 'node:fs'
+import { join } from 'node:path'
+import { readFile } from 'node:fs/promises'
 import { z } from 'zod'
 import { isProcessRunning } from './utils/isProcessRunning'
 
@@ -12,7 +12,7 @@ export async function incomplete(destination: string) {
 
 export async function isBackupStillRunning(incompleteData: IncompleteBackupData) {
   const { pid } = incompleteData
-  return isProcessRunning(parseInt(pid, 10))
+  return isProcessRunning(Number.parseInt(pid, 10))
 }
 
 export async function deleteIncompleteMarkerAndRenameDirectory(

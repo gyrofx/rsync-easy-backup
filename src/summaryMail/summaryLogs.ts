@@ -1,8 +1,8 @@
 import { parse } from 'date-fns'
-import { readFile } from 'fs/promises'
+import { readFile } from 'node:fs/promises'
 import { sortBy } from 'lodash-es'
-import { join } from 'path'
-import { RsyncSummary, parseRsyncSummaryFrom } from '../rsyncSummaryFromLogFile'
+import { join } from 'node:path'
+import { type RsyncSummary, parseRsyncSummaryFrom } from '../rsyncSummaryFromLogFile'
 import { truthy } from '../utils/array'
 import { files } from '../utils/file'
 

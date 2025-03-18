@@ -1,6 +1,6 @@
-import { unlinkSync } from 'fs'
-import { symlink } from 'fs/promises'
-import { basename, join } from 'path'
+import { unlinkSync } from 'node:fs'
+import { symlink } from 'node:fs/promises'
+import { basename, join } from 'node:path'
 import { symlinkExists } from './utils/symlinkExists'
 
 export function symlinkLatestBackup(destination: string, backupDir: string) {

@@ -1,6 +1,6 @@
-import { spawn } from 'child_process'
-import { unlinkSync, writeFileSync } from 'fs'
-import { join } from 'path'
+import { spawn } from 'node:child_process'
+import { unlinkSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 export const rsyncFlags = [
   '-D',
@@ -33,16 +33,16 @@ export function rsync(props: RsyncProps) {
     const hardLinkToPreviousBackupOption = previousBackup ? [`--link-dest=${previousBackup}`] : []
     const logFileOption = `--log-file=${logFile}`
 
-    const rsyncArgsuments = [
+    const rsyncArguments = [
       ...rsyncFlags,
       ...hardLinkToPreviousBackupOption,
       logFileOption,
       `${source}/`,
       backupDir,
     ]
-    console.log('rsyncArgsuments', rsyncArgsuments)
+    console.log('rsyncArguments', rsyncArguments)
 
-    const rsync = spawn('rsync', rsyncArgsuments, {
+    const rsync = spawn('rsync', rsyncArguments, {
       stdio: 'inherit',
     })
 
@@ -50,7 +50,7 @@ export function rsync(props: RsyncProps) {
     if (!pid) throw new Error('rsync pid is undefined')
 
     rsync.on('close', (code) => {
-      console.log('rsyncArgsuments', rsyncArgsuments)
+      console.log('rsyncArguments', rsyncArguments)
       console.log('rsync pid', pid)
       unlinkSync(join(destination, '.incomplete'))
       if (code === 0) resolve()

@@ -1,6 +1,6 @@
 import { millisecondsToSeconds } from 'date-fns'
-import { Strategy } from './types'
-import { Backup } from './backup'
+import type { Strategy } from './types'
+import type { Backup } from './backup'
 
 export function expiredBackups(backups: Backup[], strategies: Strategy[]) {
   const lastKeptBackups: Record<string, Date> = {}

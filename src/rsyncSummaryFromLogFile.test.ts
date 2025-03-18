@@ -1,6 +1,6 @@
 import { diskInformationFromDirectory } from './utils/disk'
 import { parseTextAsBytes, rsyncSummaryFromLogFile } from './rsyncSummaryFromLogFile'
-import { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vitest'
 
 describe('parseTextAsBytes', () => {
   it('parse a bytes number with K', () => {

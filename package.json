@@ -1,7 +1,7 @@
 {
   "name": "backup-rsync",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "pack": "bun build ./src/main.ts --compile --outfile dist/rsync-backup",
