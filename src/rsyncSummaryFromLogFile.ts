@@ -95,9 +95,9 @@ function removeDateTimeAndPidFromLine(line: string) {
 }
 
 function parseNumberOfFiles(line: string) {
-  const match = line.match(/reg: ([0-9,]+),/)
-  if (!match) throw new Error("Invalid rsync summary")
-  return parseInt(match[1]!.replace(',', ''), 10)
+  const match = line.match(/reg: ([0-9,\.]+),/)
+  if (!match) throw new Error('Invalid rsync summary')
+  return Number.parseInt(match[1]!.replace(',', '').replace('.', ''), 10)
 }
 
 function parseSummaryValue(line: string) {
@@ -121,9 +121,9 @@ function unitFactor(char: string) {
 }
 
 function parseNumber(line: string) {
-  const n = line.split(':', 2)[1]?.trim().replace(',', '')
-  if (!n) throw new Error("Invalid rsync summary")
-  return parseInt(n, 10)
+  const n = line.split(':', 2)[1]?.trim().replace(',', '').replace('.', '')
+  if (!n) throw new Error('Invalid rsync summary')
+  return Number.parseInt(n, 10)
 }
 
 export type TypeTests = AssertTrue<Has<z.infer<typeof zodRsyncSummary>, RsyncSummary>>
