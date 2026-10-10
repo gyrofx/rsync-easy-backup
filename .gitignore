@@ -4,6 +4,5 @@ build-server/
 node_modules
 dist
 .env
-.checkBackup.json
 yarn-error.log
 coverage
