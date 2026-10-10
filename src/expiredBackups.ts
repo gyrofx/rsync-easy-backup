@@ -1,37 +1,29 @@
-import { millisecondsToSeconds } from 'date-fns'
+import { differenceInCalendarDays } from 'date-fns'
 import type { Strategy } from './types'
 import type { Backup } from './backup'
 
+// Each strategy splits time into fixed buckets of `intervalInDays` calendar days.
+// The oldest backup in a bucket is kept, all others in the same bucket expire.
+// Because the buckets don't move between runs, a kept backup stays kept until it
+// reaches the next (coarser) strategy.
 export function expiredBackups(backups: Backup[], strategies: Strategy[]) {
-  const lastKeptBackups: Record<string, Date> = {}
+  const keptBuckets = new Set<string>()
 
-  return backups.filter(({ date }) => {
-    const stragety = strategies.find(({ cutOfDate }) => cutOfDate > date)
-    if (!stragety) return false
+  return [...backups]
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
+    .filter(({ date }) => {
+      const strategy = strategies.find(({ cutOfDate }) => cutOfDate > date)
+      if (!strategy) return false
 
-    const lastKeptBackup = lastKeptBackupByStrategy(lastKeptBackups, stragety)
+      const bucket = bucketKey(strategy, date)
+      if (keptBuckets.has(bucket)) return true
 
-    if (!lastKeptBackup || outsideIntervalByStratgey(lastKeptBackup, date, stragety)) {
-      lastKeptBackups[strategyKey(stragety)] = date
+      keptBuckets.add(bucket)
       return false
-    }
-
-    return true
-  })
+    })
 }
 
-function lastKeptBackupByStrategy(lastKeptBackups: Record<string, Date>, stragety: Strategy) {
-  return lastKeptBackups[strategyKey(stragety)]
-}
-
-function outsideIntervalByStratgey(lastKeptBackup: Date, date: Date, stragety: Strategy) {
-  const diffInSecondsBetweenLastKeptBackupAndCurrentBackup = Math.abs(
-    millisecondsToSeconds(date.getTime() - lastKeptBackup.getTime()),
-  )
-
-  return diffInSecondsBetweenLastKeptBackupAndCurrentBackup > stragety.cutOfIntervalInSeconds
-}
-
-function strategyKey(strategy: Strategy) {
-  return `${strategy.afterDays}-${strategy.intervalInDays}`
+function bucketKey(strategy: Strategy, date: Date) {
+  const bucketIndex = Math.floor(differenceInCalendarDays(date, 0) / strategy.intervalInDays)
+  return `${strategy.afterDays}-${strategy.intervalInDays}-${bucketIndex}`
 }
