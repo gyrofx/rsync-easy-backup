@@ -13,7 +13,7 @@ describe('composeSummaryText', () => {
     const date = new Date(2023, 7, 30)
     setSystemTime(date)
 
-    const text = await composeSummarytText(
+    const { text } = await composeSummarytText(
       './src/summaryMail/__test__',
       new Date(2023, 7, 25),
       new Date(2023, 7, 30),
