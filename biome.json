@@ -19,10 +19,6 @@
     }
   },
   "files": {
-    "ignore": [
-      "build/assets/*.js",
-      "dist/**/*",
-      "node_modules/**/*"
-    ]
+    "includes": ["**", "!**/build/assets/**/*.js", "!**/dist/**/*", "!**/node_modules/**/*"]
   }
 }

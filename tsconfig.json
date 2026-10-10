@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "incremental": true,
     "tsBuildInfoFile": "./.buildcache/frontend",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -28,10 +27,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["vitest/globals", "node"],
-    "module": "commonjs",
+    "module": "preserve",
     "esModuleInterop": true,
-    "target": "es2018",
-    "moduleResolution": "node",
+    "target": "es2022",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "outDir": "dist"
   },
