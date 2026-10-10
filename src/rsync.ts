@@ -25,17 +25,20 @@ interface RsyncProps {
   backupDir: string
   previousBackup: string | undefined
   logFile: string
+  filters: string[]
 }
 
 export function rsync(props: RsyncProps) {
-  const { source, destination, backupDir, previousBackup, logFile } = props
+  const { source, destination, backupDir, previousBackup, logFile, filters } = props
   return new Promise<void>((resolve, reject) => {
     const hardLinkToPreviousBackupOption = previousBackup ? [`--link-dest=${previousBackup}`] : []
     const logFileOption = `--log-file=${logFile}`
+    const filterOptions = filters.map((filter) => `--filter=${filter}`)
 
     const rsyncArguments = [
       ...rsyncFlags,
       ...hardLinkToPreviousBackupOption,
+      ...filterOptions,
       logFileOption,
       `${source}/`,
       backupDir,

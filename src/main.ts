@@ -36,6 +36,13 @@ async function main() {
       `Set the log dir path. If this flag is set, a JSON file will be created.
       The file contains all the changed file and some statistics.`,
     )
+    .option(
+      '--filter <rule>',
+      `Pass an rsync filter rule, e.g. "- *.pst" to skip all .pst files.
+      Can be repeated, the rules are applied in the given order.`,
+      (value, previous: string[]) => [...previous, value],
+      [] as string[],
+    )
     .action(rsyncAction)
 
   program

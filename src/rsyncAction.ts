@@ -29,7 +29,7 @@ export async function rsyncAction(name: string, source: string, destination: str
     if (!existsSync(destination)) throw new Error('Destination folder does not exist')
     if (!backupMarkerExists(destination)) throw new Error('Backup marker does not exist')
 
-    const { strategy, summaryDir, logDir } = options
+    const { strategy, summaryDir, logDir, filter } = options
 
     const now = nowUTC()
     const startTime = now.getTime()
@@ -50,7 +50,14 @@ export async function rsyncAction(name: string, source: string, destination: str
 
     mkdirSync(backupDir, { recursive: true })
     await removeSymlinkLatestBackup(destination)
-    await rsync({ source, destination, backupDir, previousBackup: lastBackupDir(backups), logFile })
+    await rsync({
+      source,
+      destination,
+      backupDir,
+      previousBackup: lastBackupDir(backups),
+      logFile,
+      filters: filter,
+    })
     await symlinkLatestBackup(destination, backupDir)
 
     const backupDurationInSeconds = millisecondsToSeconds(Date.now() - startTime)
@@ -82,4 +89,5 @@ interface Options {
   strategy: Strategy[]
   summaryDir?: string
   logDir?: string
+  filter: string[]
 }
