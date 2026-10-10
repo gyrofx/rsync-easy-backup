@@ -1,14 +1,14 @@
+import { afterAll, describe, expect, it, setSystemTime } from 'bun:test'
 import { parseISO } from 'date-fns'
 
 import { parseStrategyOption } from './parseStrategyOption'
 import { nowUTC } from './utils/nowUTC'
 
-beforeAll(() => void vi.useFakeTimers())
-afterAll(() => void vi.useRealTimers())
+afterAll(() => void setSystemTime())
 
 describe('parseStrategyOption', () => {
   it('parses the strategy options', () => {
-    vi.setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
+    setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
     expect(parseStrategyOption('1:1 30:7 365:30', nowUTC())).toMatchInlineSnapshot(`
       [
         {

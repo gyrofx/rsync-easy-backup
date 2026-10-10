@@ -1,14 +1,14 @@
+import { afterAll, describe, expect, it, setSystemTime } from 'bun:test'
 import { parseISO } from 'date-fns'
 import { expiredBackups } from './expiredBackups'
 import { parseStrategyOption } from './parseStrategyOption'
 import { nowUTC } from './utils/nowUTC'
 
-beforeAll(() => void vi.useFakeTimers())
-afterAll(() => void vi.useRealTimers())
+afterAll(() => void setSystemTime())
 
 describe('expiredBackups', () => {
   it('should find all backups to delete', () => {
-    vi.setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
+    setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
     console.log('......', new Date())
     expect(
       expiredBackups(
@@ -19,7 +19,7 @@ describe('expiredBackups', () => {
   })
 
   it('finds expired backups within the first strategy', () => {
-    vi.setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
+    setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
 
     expect(
       expiredBackups(

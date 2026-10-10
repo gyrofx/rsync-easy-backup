@@ -14,8 +14,7 @@
     "ms-vscode-remote.vscode-remote-extensionpack",
     "gamunu.vscode-yarn",
     "mariusschulz.yarn-lock-syntax",
-    "mhutchie.git-graph",
-    "zixuanchen.vitest-explorer"
+    "mhutchie.git-graph"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
