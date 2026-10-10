@@ -26,6 +26,7 @@
     "find-process": "^1.4.7",
     "inquirer": "^9.2.10",
     "lodash-es": "^4.17.21",
+    "node-ssh": "^13.2.1",
     "nodemailer": "^6.9.4",
     "pretty-bytes": "^6.1.1",
     "pug": "^3.0.2",
@@ -37,9 +38,11 @@
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^18.14.0",
     "@types/ssh2": "^1.11.13",
+    "@vitest/coverage-v8": "^5.0.3",
     "bun-types": "latest",
     "concurrently": "^6.0.0",
     "typescript": "^4.9.5",
-    "vitest": "^0.28.5"
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
   }
 }

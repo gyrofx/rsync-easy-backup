@@ -1,4 +1,3 @@
-import { unknownErrorToPlainObject } from 'utils/errors'
 import { execAsync } from '../execAsync'
 import { df } from './shell'
 
