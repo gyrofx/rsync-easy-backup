@@ -8,11 +8,6 @@ TOOL_NAME="rsync-easy-backup"
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
-# Check if the OS is macOS and adjust the OS variable accordingly
-if [ "$OS" = "darwin" ]; then
-  OS="macos"
-fi
-
 # Function to get the latest release version from GitHub API
 get_latest_release_version() {
   LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${GITHUB_REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
