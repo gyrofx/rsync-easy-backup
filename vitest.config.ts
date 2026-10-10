@@ -1,24 +1,12 @@
-import { readdirSync } from 'fs'
-import path from 'path'
-import { defineConfig } from 'vite'
-import svgrPlugin from 'vite-plugin-svgr'
-import viteTsconfigPaths from 'vite-tsconfig-paths'
+import path from 'node:path'
+import { defineConfig } from 'vitest/config'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   test: {
     globals: true,
-    // setupFiles: ['src/__test__/setupTests.ts'],
-    // coverage: {
-    //   reporter: process.env.CI ? ['text', 'text-summary', 'html', 'lcov', 'cobertura'] : undefined,
-    // },
-    // reporters: process.env.CI ? ['default', 'html', 'junit', 'vitest-sonar-reporter'] : undefined,
-    // outputFile: {
-    //   junit: 'test-report/junit.xml',
-    //   'vitest-sonar-reporter': 'test-report/test-report.xml',
-    //   html: 'test-report/test-report.html',
-    // },
-    // exclude: [...configDefaults.exclude, ...excludedTestPatterns()],
+    coverage: {
+      include: ['src/**/*.ts'],
+    },
   },
   resolve: {
     alias: {
@@ -26,8 +14,3 @@ export default defineConfig({
     },
   },
 })
-
-function alias() {
-  const directories = readdirSync(path.resolve(__dirname, './src'), { withFileTypes: true })
-  return Object.fromEntries(directories.map((dir) => [dir.name, path.resolve(__dirname, `./src/${dir.name}`)]))
-}

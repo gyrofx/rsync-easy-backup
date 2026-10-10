@@ -9,6 +9,13 @@ vi.mock('./shell', () => ({
   }),
 }))
 
+vi.mock('../execAsync', () => ({
+  execAsync: vi.fn().mockResolvedValue({
+    stdout: '/dev/sdb: UUID="3255683f-53a2-4fdf-91cf-b4c1041e2a62" BLOCK_SIZE="4096" TYPE="ext4"\n',
+    stderr: '',
+  }),
+}))
+
 describe('diskInformationFromDirectory', () => {
   it('retrieves and parse disk infromation', async () => {
     expect(await diskInformationFromDirectory('/tmp')).toMatchInlineSnapshot(`

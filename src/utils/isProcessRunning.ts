@@ -1,5 +1,5 @@
 import find from 'find-process'
-import { unknownErrorToPlainObject } from 'utils/errors'
+import { unknownErrorToPlainObject } from './errors'
 
 export async function isProcessRunning(pid: number): Promise<boolean> {
   console.log(`Checking if process with pid ${pid} is running`)

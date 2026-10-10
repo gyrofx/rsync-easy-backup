@@ -31,6 +31,9 @@ describe('composeSummaryText', () => {
         available: 897 GB
         used: 927 GB
 
+      Summary of all Backups ***********************************
+      ✅ Backup winbau: 0 B of 31.1 GB (0 %) 0 of 91092 Files (0 %) in 2 backups
+
       Backups **************************************************
 
       -----------------------------------------------
