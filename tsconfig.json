@@ -26,7 +26,7 @@
     "experimentalDecorators": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "node"],
+    "types": ["bun"],
     "module": "preserve",
     "esModuleInterop": true,
     "target": "es2022",

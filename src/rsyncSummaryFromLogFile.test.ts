@@ -1,6 +1,6 @@
-import { diskInformationFromDirectory } from './utils/disk'
+import { afterAll, describe, expect, it, spyOn } from 'bun:test'
 import { parseTextAsBytes, rsyncSummaryFromLogFile } from './rsyncSummaryFromLogFile'
-import type { MockedFunction } from 'vitest'
+import * as disk from './utils/disk'
 
 describe('parseTextAsBytes', () => {
   it('parse a bytes number with K', () => {
@@ -8,18 +8,15 @@ describe('parseTextAsBytes', () => {
   })
 })
 
-vi.mock('./utils/disk')
-const diskInformationFromDirectoryMock = diskInformationFromDirectory as MockedFunction<
-  typeof diskInformationFromDirectory
->
-
-diskInformationFromDirectoryMock.mockResolvedValue({
+const diskInformationFromDirectoryMock = spyOn(disk, 'diskInformationFromDirectory').mockResolvedValue({
   availableInBytes: 152784968000,
   usedInBytes: 96951088000,
   devicePath: '/dev/sdb',
   totalSizeInBytes: 263174212000,
   uuid: '3255683f-53a2-4fdf-91cf-b4c1041e2a62',
 })
+
+afterAll(() => diskInformationFromDirectoryMock.mockRestore())
 
 describe('rsyncSummaryFromLogFile', () => {
   it('parse a bytes number with M', async () => {
@@ -40,7 +37,7 @@ describe('rsyncSummaryFromLogFile', () => {
           "new-backup",
         ],
         "backupDurationInSeconds": 10,
-        "backupTime": 2023-02-01T11:13:14.000Z,
+        "backupTime": 2023-02-01T12:13:14.000Z,
         "deletedBackups": [
           "old-backup",
         ],
@@ -80,7 +77,7 @@ describe('rsyncSummaryFromLogFile', () => {
           "new-backup",
         ],
         "backupDurationInSeconds": 10,
-        "backupTime": 2023-02-01T11:13:14.000Z,
+        "backupTime": 2023-02-01T12:13:14.000Z,
         "deletedBackups": [
           "old-backup",
         ],

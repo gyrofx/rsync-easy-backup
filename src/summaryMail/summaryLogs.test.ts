@@ -1,7 +1,5 @@
+import { describe, expect, it } from 'bun:test'
 import { summaryLogs } from './summaryLogs'
-
-// vi.mock('../utils/file')
-// const filesMock = files as MockedFunction<typeof files>
 
 describe('summaryLogs', () => {
   it('parses all summary logs in a specificy time range', async () => {
