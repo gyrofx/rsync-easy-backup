@@ -7,3 +7,4 @@ dist
 .checkBackup.json
 yarn-error.log
 coverage
+.buildcache
