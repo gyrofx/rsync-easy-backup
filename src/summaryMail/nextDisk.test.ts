@@ -1,6 +1,5 @@
-import { MockedFunction } from 'vitest'
-import { RsyncSummary } from '../rsyncSummaryFromLogFile'
-import { initDiskAliases, initDiskAliasesForTestOnly, sortedDiskAliases } from './diskAlias'
+import type { RsyncSummary } from '../rsyncSummaryFromLogFile'
+import { initDiskAliasesForTestOnly, sortedDiskAliases } from './diskAlias'
 import { nextDisk } from './nextDisk'
 
 beforeAll(async () => await initDiskAliasesForTestOnly({ 'uuid-1': '1', 'uuid-2': '2', 'uuid-3': '3' }))

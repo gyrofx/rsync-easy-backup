@@ -1,6 +1,5 @@
-import { MockedFunction } from 'vitest'
 import { composeSummarytText } from './composeSummaryText'
-import { diskAlias, initDiskAliasesForTestOnly, sortedDiskAliases } from './diskAlias'
+import { initDiskAliasesForTestOnly } from './diskAlias'
 
 beforeAll(() => {
   initDiskAliasesForTestOnly({ 'uuid-1': 'DISK 1', 'uuid-2': 'DISK 2', 'uuid-3': 'DISK 3' })

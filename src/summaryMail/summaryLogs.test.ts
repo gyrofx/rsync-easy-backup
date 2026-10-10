@@ -1,5 +1,3 @@
-import { MockedFunction } from 'vitest'
-import { files } from '../utils/file'
 import { summaryLogs } from './summaryLogs'
 
 // vi.mock('../utils/file')
@@ -7,7 +5,11 @@ import { summaryLogs } from './summaryLogs'
 
 describe('summaryLogs', () => {
   it('parses all summary logs in a specificy time range', async () => {
-    const logs = await summaryLogs('./src/summaryMail/__test__', new Date(2023, 7, 25), new Date(2023, 7, 28))
+    const logs = await summaryLogs(
+      './src/summaryMail/__test__',
+      new Date(2023, 7, 25),
+      new Date(2023, 7, 28),
+    )
     expect(logs).toMatchInlineSnapshot(`
       [
         {

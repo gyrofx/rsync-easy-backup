@@ -8,7 +8,7 @@
     "start": "bun run src/main.ts",
     "test": "vitest",
     "lint": "bun run biome lint ./src/; bun run tsc-lint-server",
-    "format": "bun run biome format--write .",
+    "format": "bun run biome format --write .",
     "tsc-lint-server:watch": "bun run tsc-lint-server --watch",
     "tsc-lint-server": "bun run tsc --noEmit"
   },

@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { AssertTrue, Has } from 'conditional-type-checks'
-import { readFile } from 'fs/promises'
+import type { AssertTrue, Has } from 'conditional-type-checks'
+import { readFile } from 'node:fs/promises'
 import { createTransport } from 'nodemailer'
 
 export async function initMailConfig(path: string) {

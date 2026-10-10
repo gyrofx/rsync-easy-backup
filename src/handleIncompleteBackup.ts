@@ -20,7 +20,7 @@ export async function deleteIncompleteMarkerAndRenameDirectory(
   backupDir: string,
   incompleteData: IncompleteBackupData,
 ) {
-  const { pid, backupDir: incompleteBackupDir } = incompleteData
+  const { backupDir: incompleteBackupDir } = incompleteData
 
   console.log('Backup is not running, removing incomplete marker')
   await unlinkSync(join(destination, '.incomplete'))

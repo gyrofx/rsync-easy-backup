@@ -1,6 +1,5 @@
-import { hoursToSeconds, parseISO, subDays } from 'date-fns'
+import { parseISO } from 'date-fns'
 import { expiredBackups } from './expiredBackups'
-import { Strategy } from './types'
 import { parseStrategyOption } from './parseStrategyOption'
 import { nowUTC } from './utils/nowUTC'
 
@@ -16,7 +15,7 @@ describe('expiredBackups', () => {
         [{ date: new Date('2020-06-01T00:00:10.000Z'), name: '', path: ',' }],
         defaultStrategy(),
       ).map(({ date }) => date),
-    ).toMatchInlineSnapshot("[]")
+    ).toMatchInlineSnapshot('[]')
   })
 
   it('finds expired backups within the first strategy', () => {
