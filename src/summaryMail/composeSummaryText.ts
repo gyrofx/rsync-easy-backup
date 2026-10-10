@@ -5,13 +5,28 @@ import prettyBytes from 'pretty-bytes'
 import { diskAlias } from './diskAlias'
 import { nextDisk } from './nextDisk'
 import type { RsyncSummary } from '../rsyncSummaryFromLogFile'
+import { missingBackups } from './missingBackups'
 
-export async function composeSummarytText(summaryDir: string, from: Date, to: Date) {
+export async function composeSummarytText(
+  summaryDir: string,
+  from: Date,
+  to: Date,
+  expectedNames: string[] = [],
+) {
   const summaries = await summaryLogs(summaryDir, from, to)
   let text = ''
 
   const latestBackup = summaries[0]
-  if (!latestBackup) return text
+  if (!latestBackup) return { text, hasMissingBackups: false }
+
+  const missing = missingBackups(summaries, expectedNames)
+  if (missing.length > 0) {
+    text += '⚠️ Missing backups ***************************************\n'
+    missing.forEach(({ diskUuid, names }) => {
+      text += `  Disk ${diskAlias(diskUuid) || diskUuid}: ${names.join(', ')}\n`
+    })
+    text += '\n'
+  }
 
   const nextDiskUuid = nextDisk(latestBackup)
   const nextDiskAlias = nextDiskUuid ? diskAlias(nextDiskUuid) : '???'
@@ -66,7 +81,7 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
     })
   })
 
-  return text
+  return { text, hasMissingBackups: missing.length > 0 }
 }
 
 function backSummariesText(summariesGroupedByName: RsyncSummary[][]) {

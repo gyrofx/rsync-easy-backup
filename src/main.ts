@@ -60,6 +60,11 @@ async function main() {
       `Set the summary dir path. If this flag is set, a JSON file will be created.
       The file contains all the changed file and some statistics.`,
     )
+    .option(
+      '--expected-backups <names>',
+      `Comma separated backup names that every disk should have a backup of.
+      Missing ones are reported at the top of the mail.`,
+    )
     .action(summaryMailAction)
 
   await program.parseAsync()

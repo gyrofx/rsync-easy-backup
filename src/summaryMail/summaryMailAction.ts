@@ -9,13 +9,15 @@ export async function summaryMailAction(summaryDir: string, mailConfigPath: stri
 
   const to = new Date()
   const from = subDays(to, parseInt(options.daysAgo || '0', 10) || 100 * 365)
-  const text = await composeSummarytText(summaryDir, from, to)
+  const expectedNames = (options.expectedBackups || '').split(/[\s,]+/).filter(Boolean)
+  const { text, hasMissingBackups } = await composeSummarytText(summaryDir, from, to, expectedNames)
 
-  await sendMail('Summary', text)
+  await sendMail(hasMissingBackups ? 'Summary ⚠️ missing backups' : 'Summary', text)
   console.log('Summary mail sent')
 }
 
 interface Options {
   diskAliasPath?: string
   daysAgo?: string
+  expectedBackups?: string
 }
