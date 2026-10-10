@@ -1,9 +1,9 @@
-import { createHash } from 'crypto'
-import { readFile } from 'fs/promises'
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
 import { NodeSSH } from 'node-ssh'
 import { z } from 'zod'
 import inquirer from 'inquirer'
-import { posix } from 'path'
+import { posix } from 'node:path'
 
 const ssh = new NodeSSH()
 

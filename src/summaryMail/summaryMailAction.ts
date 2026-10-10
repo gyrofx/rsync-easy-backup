@@ -1,8 +1,6 @@
-import nodemailer from 'nodemailer'
 import { composeSummarytText } from './composeSummaryText'
 import { initDiskAliases } from './diskAlias'
 import { initMailConfig, sendMail } from './mailConfig'
-import { now } from 'lodash-es'
 import { subDays } from 'date-fns'
 
 export async function summaryMailAction(summaryDir: string, mailConfigPath: string, options: Options) {
@@ -10,7 +8,7 @@ export async function summaryMailAction(summaryDir: string, mailConfigPath: stri
   await initMailConfig(mailConfigPath)
 
   const to = new Date()
-  const from = subDays(to, parseInt(options.daysAgo || '0') || 100 * 365)
+  const from = subDays(to, parseInt(options.daysAgo || '0', 10) || 100 * 365)
   const text = await composeSummarytText(summaryDir, from, to)
 
   await sendMail('Summary', text)

@@ -1,5 +1,5 @@
-import { RsyncSummary } from '../rsyncSummaryFromLogFile'
-import { DiskUuid, sortedDiskUuids } from './diskAlias'
+import type { RsyncSummary } from '../rsyncSummaryFromLogFile'
+import { type DiskUuid, sortedDiskUuids } from './diskAlias'
 
 export function nextDisk(latestBackup: RsyncSummary): DiskUuid | undefined {
   const disks = sortedDiskUuids()

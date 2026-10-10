@@ -1,5 +1,5 @@
 import { hoursToSeconds, subDays } from 'date-fns'
-import { Strategy } from './types'
+import type { Strategy } from './types'
 import { minLength2 } from './utils/array'
 import sortBy from 'lodash-es/sortBy'
 

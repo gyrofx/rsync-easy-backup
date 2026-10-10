@@ -95,9 +95,9 @@ function removeDateTimeAndPidFromLine(line: string) {
 }
 
 function parseNumberOfFiles(line: string) {
-  const match = line.match(/reg: ([0-9,\.]+),/)
-  if (!match) throw new Error('Invalid rsync summary')
-  return Number.parseInt(match[1]!.replace(',', '').replace('.', ''), 10)
+  const value = line.match(/reg: ([0-9,.]+),/)?.[1]
+  if (!value) throw new Error('Invalid rsync summary')
+  return Number.parseInt(value.replace(',', '').replace('.', ''), 10)
 }
 
 function parseSummaryValue(line: string) {

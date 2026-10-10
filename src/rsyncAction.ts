@@ -53,7 +53,7 @@ export async function rsyncAction(name: string, source: string, destination: str
     await rsync({ source, destination, backupDir, previousBackup: lastBackupDir(backups), logFile })
     await symlinkLatestBackup(destination, backupDir)
 
-    const backupDurationInSeconds = millisecondsToSeconds(new Date().getTime() - startTime)
+    const backupDurationInSeconds = millisecondsToSeconds(Date.now() - startTime)
 
     if (summaryDir) {
       const summaryFile = `${summaryDir}/${logFilename}.json`

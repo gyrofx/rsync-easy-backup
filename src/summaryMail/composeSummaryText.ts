@@ -4,7 +4,7 @@ import { format, formatDuration, intervalToDuration, secondsToMilliseconds } fro
 import prettyBytes from 'pretty-bytes'
 import { diskAlias } from './diskAlias'
 import { nextDisk } from './nextDisk'
-import { RsyncSummary } from '../rsyncSummaryFromLogFile'
+import type { RsyncSummary } from '../rsyncSummaryFromLogFile'
 
 export async function composeSummarytText(summaryDir: string, from: Date, to: Date) {
   const summaries = await summaryLogs(summaryDir, from, to)
@@ -34,24 +34,24 @@ export async function composeSummarytText(summaryDir: string, from: Date, to: Da
     text += `  used: ${prettyBytes(latestSummaryForDisk.disk.usedInBytes)}\n\n`
 
     const summariesGroupedByName = groupBy(summaries, (summary) => summary.name)
-    text += "Summary of all Backups ***********************************\n"
+    text += 'Summary of all Backups ***********************************\n'
     text += backSummariesText(Object.values(summariesGroupedByName))
 
-    text += "\n"
-    text += "Backups **************************************************\n"
+    text += '\n'
+    text += 'Backups **************************************************\n'
 
     Object.entries(summariesGroupedByName).forEach(([_, summaries]) => {
       const latestSummaryForName = summaries[0]
       if (!latestSummaryForName) return
 
-      text += "\n-----------------------------------------------\n"
+      text += '\n-----------------------------------------------\n'
       text += `  Backup ${latestSummaryForName.name} (${prettyBytes(
         latestSummaryForName.totalFileSize,
       )})\n`
       text += `    Latest backup ${format(latestSummaryForName.backupTime, 'dd.MM.yyyy HH:mm')}\n`
       text += `    Available backups: ${latestSummaryForName.availableBackups.join(', ')}\n`
-      text += "-----------------------------------------------\n"
-      text += "    Backups: \n"
+      text += '-----------------------------------------------\n'
+      text += '    Backups: \n'
 
       summaries.forEach((summary) => {
         text += `    Backup: ${format(summary.backupTime, 'dd.MM.yyyy HH:mm')}\n`
@@ -133,11 +133,4 @@ function backSummaryTextTemplate(props: {
 function formatSeconds(seconds: number) {
   const duration = intervalToDuration({ start: 0, end: secondsToMilliseconds(seconds) })
   return formatDuration(duration)
-}
-
-interface Options {
-  from: Date
-  to: Date
-  summaryDir: string
-  logDir?: string
 }
