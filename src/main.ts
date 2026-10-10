@@ -6,7 +6,6 @@ import { handleErrorDelicately } from './utils/handleErrorDelicately'
 import { rsyncAction } from './rsyncAction'
 import { nowUTC } from './utils/nowUTC'
 import { parseStrategyOption } from './parseStrategyOption'
-import { summaryMailAction } from './summaryMail/summaryMailAction'
 
 async function main() {
   const now = nowUTC()
@@ -44,35 +43,6 @@ async function main() {
       [] as string[],
     )
     .action(rsyncAction)
-
-  program
-    .command('send-summary')
-    .argument(
-      '<summarydir>',
-      `Set the summary dir path. If this flag is set, a JSON file will be created.
-      The file contains all the changed file and some statistics.`,
-    )
-    .argument(
-      '<mailConfigPath>',
-      `Set the config path. If this flag is set, a JSON file will be created.
-      The file contains all the changed file and some statistics.`,
-    )
-    .option(
-      '--disk-alias-path <diskAliasPath>',
-      `Set the summary dir path. If this flag is set, a JSON file will be created.
-      The file contains all the changed file and some statistics.`,
-    )
-    .option(
-      '--days-ago <daysAgo>',
-      `Set the summary dir path. If this flag is set, a JSON file will be created.
-      The file contains all the changed file and some statistics.`,
-    )
-    .option(
-      '--expected-backups <names>',
-      `Comma separated backup names that every disk should have a backup of.
-      Missing ones are reported at the top of the mail.`,
-    )
-    .action(summaryMailAction)
 
   await program.parseAsync()
 }

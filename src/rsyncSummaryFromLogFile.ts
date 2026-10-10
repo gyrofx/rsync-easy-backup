@@ -1,6 +1,4 @@
-import { z } from 'zod'
 import { type DiskInformation, diskInformationFromDirectory } from './utils/disk'
-import type { AssertTrue, Has } from 'conditional-type-checks'
 
 export async function rsyncSummaryFromLogFile(props: {
   name: string
@@ -50,10 +48,6 @@ export async function rsyncSummaryFromLogFile(props: {
   return { ...summary, disk, deletedBackups, availableBackups, backupDurationInSeconds }
 }
 
-export function parseRsyncSummaryFrom(content: unknown): RsyncSummary {
-  return zodRsyncSummary.parse(content)
-}
-
 export interface RsyncSummary {
   name: string
   backupTime: Date
@@ -68,27 +62,6 @@ export interface RsyncSummary {
   availableBackups: string[]
   disk: DiskInformation
 }
-
-const zodRsyncSummary = z.object({
-  name: z.string(),
-  backupTime: z.coerce.date(),
-  backupDurationInSeconds: z.number(),
-  source: z.string(),
-  destination: z.string(),
-  numberOfFiles: z.coerce.number(),
-  numberOfRegularFilesTransferred: z.coerce.number(),
-  totalFileSize: z.coerce.number(),
-  totalTransferredFileSize: z.coerce.number(),
-  deletedBackups: z.array(z.string()),
-  availableBackups: z.array(z.string()),
-  disk: z.object({
-    availableInBytes: z.number(),
-    usedInBytes: z.number(),
-    devicePath: z.string(),
-    totalSizeInBytes: z.number(),
-    uuid: z.string(),
-  }),
-})
 
 function removeDateTimeAndPidFromLine(line: string) {
   return line.split(' ').slice(3).join(' ')
@@ -125,5 +98,3 @@ function parseNumber(line: string) {
   if (!n) throw new Error('Invalid rsync summary')
   return Number.parseInt(n, 10)
 }
-
-export type TypeTests = AssertTrue<Has<z.infer<typeof zodRsyncSummary>, RsyncSummary>>
