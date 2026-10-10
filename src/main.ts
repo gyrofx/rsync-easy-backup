@@ -1,5 +1,7 @@
 import { program } from '@commander-js/extra-typings'
 
+import { version } from '../package.json'
+
 import { handleErrorDelicately } from './utils/handleErrorDelicately'
 import { rsyncAction } from './rsyncAction'
 import { nowUTC } from './utils/nowUTC'
@@ -8,6 +10,8 @@ import { summaryMailAction } from './summaryMail/summaryMailAction'
 
 async function main() {
   const now = nowUTC()
+
+  program.version(version)
 
   program
     .command('backup')
