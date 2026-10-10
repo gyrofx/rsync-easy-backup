@@ -1,4 +1,4 @@
-import { UnknownKeysParam, z } from 'zod'
+import { z } from 'zod'
 import { type DiskInformation, diskInformationFromDirectory } from './utils/disk'
 import type { AssertTrue, Has } from 'conditional-type-checks'
 

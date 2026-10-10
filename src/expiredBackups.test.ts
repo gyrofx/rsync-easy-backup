@@ -1,6 +1,6 @@
 import { hoursToSeconds, parseISO, subDays } from 'date-fns'
 import { expiredBackups } from './expiredBackups'
-import { Strategy } from 'types'
+import { Strategy } from './types'
 import { parseStrategyOption } from './parseStrategyOption'
 import { nowUTC } from './utils/nowUTC'
 

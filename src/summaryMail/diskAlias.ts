@@ -32,7 +32,7 @@ async function loadDiskAliasesFromFile(diskAliasasFilePath: string): Promise<Dis
   return zodDiskAliases.parse(JSON.parse(content))
 }
 
-const zodDiskAliases = z.record(z.string())
+const zodDiskAliases = z.record(z.string(), z.string())
 
 export function initDiskAliasesForTestOnly(diskAliases: DiskAliases) {
   diskAliasesInternal = diskAliases
