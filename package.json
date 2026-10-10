@@ -7,7 +7,7 @@
     "pack": "bun build ./src/main.ts --compile --outfile dist/rsync-backup",
     "start": "bun run src/main.ts",
     "test": "bun test",
-    "lint": "bun run biome lint ./src/; bun run tsc-lint-server",
+    "lint": "bun run biome lint ./src/ ./e2e/; bun run tsc-lint-server",
     "format": "bun run biome format --write .",
     "tsc-lint-server:watch": "bun run tsc-lint-server --watch",
     "tsc-lint-server": "bun run tsc --noEmit"
