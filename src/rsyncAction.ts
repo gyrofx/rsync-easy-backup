@@ -43,15 +43,9 @@ export async function rsyncAction(name: string, source: string, destination: str
       await deleteIncompleteMarkerAndRenameDirectory(destination, backupDir, incompleteData)
     }
 
-    const backups = await latestBackups(destination)
-
-    const backupsToDelete = expiredBackups(backups, strategy)
-    backupsToDelete.forEach(deleteBackup)
-    // hard link against a backup that still exists, otherwise rsync copies everything again.
-    // When resuming an incomplete backup, backupDir is already in the list and must not link against itself.
-    const remainingBackups = backups.filter(
-      (backup) => !backupsToDelete.includes(backup) && backup.path !== backupDir,
-    )
+    // hard link against the newest backup. When resuming an incomplete backup, backupDir is already
+    // in the list and must not link against itself.
+    const previousBackups = (await latestBackups(destination)).filter(({ path }) => path !== backupDir)
 
     mkdirSync(backupDir, { recursive: true })
     await removeSymlinkLatestBackup(destination)
@@ -59,11 +53,15 @@ export async function rsyncAction(name: string, source: string, destination: str
       source,
       destination,
       backupDir,
-      previousBackup: lastBackupDir(remainingBackups),
+      previousBackup: lastBackupDir(previousBackups),
       logFile,
       filters: filter,
     })
     await symlinkLatestBackup(destination, backupDir)
+
+    // only delete expired backups once the new backup is complete, so a failed run never deletes anything
+    const backupsToDelete = expiredBackups(await latestBackups(destination), strategy)
+    for (const backup of backupsToDelete) deleteBackup(backup)
 
     const backupDurationInSeconds = millisecondsToSeconds(Date.now() - startTime)
 

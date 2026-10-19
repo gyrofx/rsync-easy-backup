@@ -52,6 +52,38 @@ describe('expiredBackups', () => {
   })
 })
 
+describe('expiredBackups keeps the newest backup', () => {
+  it('keeps the newest backup even if it is older than all strategies', () => {
+    // offline disk that missed backups for two years: 2024-05-17 is the most recent copy on it
+    setSystemTime(parseISO('2026-10-19T00:00:00.000Z'))
+    const backups = ['2023-07-06', '2023-12-22', '2024-05-03', '2024-05-16', '2024-05-17'].map(
+      (day) => ({
+        date: parseISO(`${day}T02:15:00.000Z`),
+        name: day,
+        path: '',
+      }),
+    )
+
+    const expired = expiredBackups(backups, parseStrategyOption('1:1 14:14 30:30 365:365', nowUTC()))
+
+    expect(expired.map(({ name }) => name)).not.toContain('2024-05-17')
+    expect(expired.map(({ name }) => name)).toMatchInlineSnapshot(`
+      [
+        "2024-05-03",
+        "2024-05-16",
+      ]
+    `)
+  })
+
+  it('keeps the newest backup even if an older one is in the same bucket', () => {
+    setSystemTime(parseISO('2020-06-01T00:00:00.000Z'))
+    const older = { date: parseISO('2020-05-25T00:00:00.000Z'), name: 'older', path: '' }
+    const newest = { date: parseISO('2020-05-26T00:00:00.000Z'), name: 'newest', path: '' }
+
+    expect(expiredBackups([newest, older], parseStrategyOption('0:30', nowUTC()))).toEqual([])
+  })
+})
+
 describe('expiredBackups over repeated runs', () => {
   it('keeps one backup per day for 14 days when backing up every 2 hours', () => {
     const end = parseISO('2026-10-09T21:30:00.000Z')
