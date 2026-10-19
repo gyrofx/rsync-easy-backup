@@ -167,6 +167,46 @@ describe('interrupted backup', () => {
     expect(existsSync(join(destination, '.incomplete'))).toBe(false)
   })
 
+  it('resumes the newest backup when the incomplete marker is empty', () => {
+    // power loss or an unplugged disk can leave an empty marker behind
+    const complete = previousBackup(subDays(new Date(), 2), '010000')
+    const interrupted = join(destination, `${format(subDays(new Date(), 1), 'yyyy-MM-dd')}-010000`)
+    mkdirSync(join(interrupted, 'docs'), { recursive: true })
+    writeFileSync(join(destination, '.incomplete'), '')
+
+    const result = backup()
+
+    expect(result.exitCode).toBe(0)
+    expect(result.output).toContain('Incomplete marker is corrupt')
+    expect(existsSync(interrupted)).toBe(false)
+    const [, resumed] = expectBackups(2)
+    expect(sameFile(join(complete, 'Outlook.pst'), join(resumed, 'Outlook.pst'))).toBe(true)
+    expect(existsSync(join(destination, '.incomplete'))).toBe(false)
+  })
+
+  it('removes an empty incomplete marker when there is no backup yet', () => {
+    writeFileSync(join(destination, '.incomplete'), '')
+
+    const result = backup()
+
+    expect(result.exitCode).toBe(0)
+    expectBackups(1)
+    expect(existsSync(join(destination, '.incomplete'))).toBe(false)
+  })
+
+  it('takes over nothing when the interrupted backup folder was deleted', () => {
+    writeFileSync(
+      join(destination, '.incomplete'),
+      JSON.stringify({ pid: String(endedPid()), backupDir: join(destination, '2026-01-01-010000') }),
+    )
+
+    const result = backup()
+
+    expect(result.exitCode).toBe(0)
+    expectBackups(1)
+    expect(existsSync(join(destination, '.incomplete'))).toBe(false)
+  })
+
   it('stops while the interrupted backup is still running', () => {
     const running = Bun.spawn(['sleep', '30'])
     try {

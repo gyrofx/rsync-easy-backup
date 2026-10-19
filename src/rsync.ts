@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process'
-import { unlinkSync, writeFileSync } from 'node:fs'
+import { unlinkSync } from 'node:fs'
 import { join } from 'node:path'
+import { writeIncompleteMarker } from './handleIncompleteBackup'
 
 export const rsyncFlags = [
   '-D',
@@ -60,6 +61,6 @@ export function rsync(props: RsyncProps) {
       else reject(new Error(`rsync exited with code ${code}`))
     })
 
-    writeFileSync(join(destination, '.incomplete'), JSON.stringify({ pid: pid.toString(), backupDir }))
+    writeIncompleteMarker(destination, { pid: pid.toString(), backupDir })
   })
 }
