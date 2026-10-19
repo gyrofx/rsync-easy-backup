@@ -113,15 +113,48 @@ describe('retention', () => {
     expect(backups()).toHaveLength(2)
   })
 
-  it('hard links against a backup that still exists when the newest one expires', () => {
+  it('hard links against the newest backup, even if it expires in the same run', () => {
     const nineDaysAgo = subDays(new Date(), 9)
     const older = previousBackup(nineDaysAgo, '010000')
-    previousBackup(nineDaysAgo, '020000')
+    const newer = previousBackup(nineDaysAgo, '020000')
+    const newerLetter = statSync(join(destination, newer, 'docs', 'letter.docx')).ino
 
     expect(backup({ options: ['--strategy', '1:1 30:7'] }).exitCode).toBe(0)
 
     const latest = readlinkSync(join(destination, 'latest'))
-    expect(sameFile(join(older, 'docs', 'letter.docx'), join(latest, 'docs', 'letter.docx'))).toBe(true)
+    expect(statSync(join(destination, latest, 'docs', 'letter.docx')).ino).toBe(newerLetter)
+    expect(backups()).toEqual([older, latest])
+  })
+
+  it('deletes nothing when the backup fails', () => {
+    const nineDaysAgo = subDays(new Date(), 9)
+    const older = previousBackup(nineDaysAgo, '010000')
+    const newer = previousBackup(nineDaysAgo, '020000')
+    const unreadable = join(source, 'docs', 'locked.docx')
+    writeFileSync(unreadable, 'locked')
+    chmodSync(unreadable, 0o000)
+
+    try {
+      expect(backup({ options: ['--strategy', '1:1 30:7'] }).exitCode).toBe(1)
+    } finally {
+      chmodSync(unreadable, 0o644)
+    }
+
+    expect(backups()).toContain(older)
+    expect(backups()).toContain(newer)
+  })
+
+  it('hard links against the newest backup when all backups are older than every strategy', () => {
+    // offline disk that missed backups for a long time
+    const older = previousBackup(subDays(new Date(), 900), '010000')
+    const newest = previousBackup(subDays(new Date(), 880), '010000')
+    const newestLetter = statSync(join(destination, newest, 'docs', 'letter.docx')).ino
+
+    expect(backup({ options: ['--strategy', '1:1 365:365'] }).exitCode).toBe(0)
+
+    const latest = readlinkSync(join(destination, 'latest'))
+    expect(statSync(join(destination, latest, 'docs', 'letter.docx')).ino).toBe(newestLetter)
+    expect(backups()).toContain(older)
   })
 
   it('keeps every backup of the last day', () => {
