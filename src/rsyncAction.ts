@@ -47,8 +47,11 @@ export async function rsyncAction(name: string, source: string, destination: str
 
     const backupsToDelete = expiredBackups(backups, strategy)
     backupsToDelete.forEach(deleteBackup)
-    // hard link against a backup that still exists, otherwise rsync copies everything again
-    const remainingBackups = backups.filter((backup) => !backupsToDelete.includes(backup))
+    // hard link against a backup that still exists, otherwise rsync copies everything again.
+    // When resuming an incomplete backup, backupDir is already in the list and must not link against itself.
+    const remainingBackups = backups.filter(
+      (backup) => !backupsToDelete.includes(backup) && backup.path !== backupDir,
+    )
 
     mkdirSync(backupDir, { recursive: true })
     await removeSymlinkLatestBackup(destination)
