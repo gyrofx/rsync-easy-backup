@@ -46,6 +46,10 @@ export function rsync(props: RsyncProps) {
     ]
     console.log('rsyncArguments', rsyncArguments)
 
+    // write the marker before rsync starts: if writing fails (e.g. disk full), no rsync may be left running.
+    // It holds the pid of this process, which waits for rsync until it ends.
+    writeIncompleteMarker(destination, { pid: process.pid.toString(), backupDir })
+
     const rsync = spawn('rsync', rsyncArguments, {
       stdio: 'inherit',
     })
@@ -56,11 +60,13 @@ export function rsync(props: RsyncProps) {
     rsync.on('close', (code) => {
       console.log('rsyncArguments', rsyncArguments)
       console.log('rsync pid', pid)
+      if (code !== 0) {
+        // keep the marker, so the next run knows this backup is incomplete and continues it
+        reject(new Error(`rsync exited with code ${code}`))
+        return
+      }
       unlinkSync(join(destination, '.incomplete'))
-      if (code === 0) resolve()
-      else reject(new Error(`rsync exited with code ${code}`))
+      resolve()
     })
-
-    writeIncompleteMarker(destination, { pid: pid.toString(), backupDir })
   })
 }
