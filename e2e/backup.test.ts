@@ -240,6 +240,41 @@ describe('interrupted backup', () => {
     expect(existsSync(join(destination, '.incomplete'))).toBe(false)
   })
 
+  it('keeps the marker when rsync fails and continues the backup on the next run', async () => {
+    const unreadable = join(source, 'docs', 'locked.docx')
+    writeFileSync(unreadable, 'locked')
+    chmodSync(unreadable, 0o000)
+    try {
+      expect(backup().exitCode).toBe(1)
+    } finally {
+      chmodSync(unreadable, 0o644)
+    }
+    const [failed] = expectBackups(1)
+    expect(existsSync(join(destination, '.incomplete'))).toBe(true)
+
+    await nextSecond()
+    const result = backup()
+
+    expect(result.exitCode).toBe(0)
+    expect(result.output).toContain('Backup is not running, removing incomplete marker')
+    const [resumed] = expectBackups(1)
+    expect(resumed).not.toBe(failed)
+    expect(filesIn(resumed)).toEqual(['Outlook.pst', 'docs/letter.docx', 'docs/locked.docx'])
+    expect(existsSync(join(destination, '.incomplete'))).toBe(false)
+  })
+
+  it('starts no rsync when the marker cannot be written', async () => {
+    // a directory in place of the temporary marker file makes writing the marker fail, like a full disk
+    mkdirSync(join(destination, '.incomplete.tmp'))
+
+    const result = backup()
+    await Bun.sleep(500)
+
+    expect(result.exitCode).toBe(1)
+    const [backupDir] = expectBackups(1)
+    expect(filesIn(backupDir)).toEqual([])
+  })
+
   it('stops while the interrupted backup is still running', () => {
     const running = Bun.spawn(['sleep', '30'])
     try {
